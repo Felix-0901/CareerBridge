@@ -1,14 +1,16 @@
 'use client';
 
-import { useState, useMemo } from 'react';
+import { Suspense, useMemo, useState } from 'react';
 import Link from 'next/link';
+import { useSearchParams } from 'next/navigation';
 import { motion } from 'framer-motion';
 import {
-  Search, SlidersHorizontal, MapPin, Clock, Building2,
-  ArrowRight, Bookmark, Star, Shield
+  Search, MapPin, Clock, Building2, ArrowRight, Bookmark, Shield
 } from 'lucide-react';
-import { jobs } from '@/data/jobs';
-import { getScoreColor, getMatchCategoryLabel, formatDate } from '@/lib/utils';
+import { getMatchCategoryLabel, getScoreColor } from '@/lib/utils';
+import { personalizeJobs } from '@/lib/analysis-engine';
+import { loadAnalysisSession, type AnalysisSession } from '@/lib/analysis-session';
+import { loadSavedJobs, saveSavedJobs, toggleSavedJob } from '@/lib/saved-jobs';
 import styles from './page.module.css';
 
 const tabs = [
@@ -21,14 +23,26 @@ const tabs = [
 
 const typeFilters = ['全部', '實習', '兼職', '正職'];
 
-export default function JobsPage() {
-  const [activeTab, setActiveTab] = useState('all');
-  const [typeFilter, setTypeFilter] = useState('全部');
+function JobsPageContent() {
+  const searchParams = useSearchParams();
+  const urlActiveTab = searchParams.get('tab');
+  const urlTypeFilter = searchParams.get('type');
+  const urlOfficialOnly = searchParams.get('official') === '1';
+  const [activeTabOverride, setActiveTabOverride] = useState<string | null>(null);
+  const [typeFilterOverride, setTypeFilterOverride] = useState<string | null>(null);
+  const [officialOnlyOverride, setOfficialOnlyOverride] = useState<boolean | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
-  const [showOfficialOnly, setShowOfficialOnly] = useState(false);
+  const [session] = useState<AnalysisSession | null>(() => loadAnalysisSession());
+  const [savedIds, setSavedIds] = useState<string[]>(() => loadSavedJobs());
+
+  const activeTab = activeTabOverride ?? (urlActiveTab && tabs.some((tab) => tab.id === urlActiveTab) ? urlActiveTab : 'all');
+  const typeFilter = typeFilterOverride ?? (urlTypeFilter && typeFilters.includes(urlTypeFilter) ? urlTypeFilter : '全部');
+  const showOfficialOnly = officialOnlyOverride ?? urlOfficialOnly;
+
+  const personalizedJobs = useMemo(() => personalizeJobs(session), [session]);
 
   const filteredJobs = useMemo(() => {
-    let result = [...jobs];
+    let result = [...personalizedJobs];
 
     if (activeTab !== 'all') {
       result = result.filter(j => j.category === activeTab);
@@ -48,8 +62,14 @@ export default function JobsPage() {
       );
     }
 
-    return result.sort((a, b) => (b.matchScore || 0) - (a.matchScore || 0));
-  }, [activeTab, typeFilter, searchQuery, showOfficialOnly]);
+    return result.sort((a, b) => b.personalizedScore - a.personalizedScore);
+  }, [activeTab, personalizedJobs, searchQuery, showOfficialOnly, typeFilter]);
+
+  const handleToggleSave = (jobId: string) => {
+    const nextIds = toggleSavedJob(savedIds, jobId);
+    setSavedIds(nextIds);
+    saveSavedJobs(nextIds);
+  };
 
   return (
     <div className={styles.container}>
@@ -60,6 +80,22 @@ export default function JobsPage() {
           <p className={styles.headerDesc}>
             根據你的能力與興趣，AI 為你篩選最適合的機會
           </p>
+        </div>
+
+        <div className={styles.contextBanner}>
+          <div>
+            <strong>{session ? '已依你的最近一次分析重新排序' : '目前顯示示範推薦排序'}</strong>
+            <p>
+              {session
+                ? '探索、手動輸入或上傳履歷後，這裡會直接沿用你的條件，不需要重新篩一次。'
+                : '完成探索或分析後，職缺排序會改成你的個人化結果。'}
+            </p>
+          </div>
+          {!session && (
+            <Link href="/onboarding" className="btn btn-secondary btn-sm">
+              先做快速探索
+            </Link>
+          )}
         </div>
 
         {/* Search & Filters */}
@@ -80,14 +116,14 @@ export default function JobsPage() {
               <button
                 key={t}
                 className={`${styles.filterBtn} ${typeFilter === t ? styles.filterActive : ''}`}
-                onClick={() => setTypeFilter(t)}
+                onClick={() => setTypeFilterOverride(t)}
               >
                 {t}
               </button>
             ))}
             <button
               className={`${styles.filterBtn} ${showOfficialOnly ? styles.filterActive : ''}`}
-              onClick={() => setShowOfficialOnly(!showOfficialOnly)}
+              onClick={() => setOfficialOnlyOverride(!showOfficialOnly)}
             >
               <Shield size={14} /> 官方資源
             </button>
@@ -100,7 +136,7 @@ export default function JobsPage() {
             <button
               key={tab.id}
               className={`tab ${activeTab === tab.id ? 'active' : ''}`}
-              onClick={() => setActiveTab(tab.id)}
+              onClick={() => setActiveTabOverride(tab.id)}
             >
               {tab.label}
             </button>
@@ -153,24 +189,33 @@ export default function JobsPage() {
                   <div className={styles.jobRight}>
                     <div
                       className={styles.scoreCircle}
-                      style={{ '--score-color': getScoreColor(job.matchScore || 0) } as React.CSSProperties}
+                      style={{ '--score-color': getScoreColor(job.personalizedScore || 0) } as React.CSSProperties}
                     >
                       <svg width="72" height="72" viewBox="0 0 72 72">
                         <circle cx="36" cy="36" r="30" fill="none" stroke="var(--color-border-light)" strokeWidth="4" />
                         <circle
                           cx="36" cy="36" r="30" fill="none"
-                          stroke={getScoreColor(job.matchScore || 0)}
+                          stroke={getScoreColor(job.personalizedScore || 0)}
                           strokeWidth="4"
-                          strokeDasharray={`${(job.matchScore || 0) * 1.885} 188.5`}
+                          strokeDasharray={`${(job.personalizedScore || 0) * 1.885} 188.5`}
                           strokeLinecap="round"
                           transform="rotate(-90 36 36)"
                         />
                       </svg>
-                      <span className={styles.scoreText}>{job.matchScore}</span>
+                      <span className={styles.scoreText}>{job.personalizedScore}</span>
                     </div>
                     <span className={styles.scoreLabel}>匹配度</span>
                     <div className={styles.jobActions}>
-                      <button className={styles.actionBtn} aria-label="收藏">
+                      <button
+                        className={`${styles.actionBtn} ${savedIds.includes(job.id) ? styles.actionBtnSaved : ''}`}
+                        aria-label={savedIds.includes(job.id) ? '取消收藏' : '收藏'}
+                        aria-pressed={savedIds.includes(job.id)}
+                        onClick={(event) => {
+                          event.preventDefault();
+                          event.stopPropagation();
+                          handleToggleSave(job.id);
+                        }}
+                      >
                         <Bookmark size={16} />
                       </button>
                       <ArrowRight size={16} className={styles.arrowIcon} />
@@ -180,8 +225,52 @@ export default function JobsPage() {
               </motion.div>
             ))}
           </div>
+          {filteredJobs.length === 0 && (
+            <div className={styles.emptyState}>
+              <h3>目前沒有符合條件的職缺</h3>
+              <p>可以先清掉篩選條件，或回到探索頁重新調整興趣與技能。</p>
+              <div className={styles.emptyActions}>
+                <button
+                  className="btn btn-secondary"
+                  onClick={() => {
+                    setActiveTabOverride('all');
+                    setTypeFilterOverride('全部');
+                    setSearchQuery('');
+                    setOfficialOnlyOverride(false);
+                  }}
+                >
+                  清除篩選
+                </button>
+                <Link href="/onboarding" className="btn btn-primary">
+                  重新探索
+                </Link>
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>
+  );
+}
+
+function JobsPageFallback() {
+  return (
+    <div className={styles.container}>
+      <div className="page-container">
+        <div className={styles.header}>
+          <span className="section-label">個人化推薦</span>
+          <h1>職缺推薦</h1>
+          <p className={styles.headerDesc}>正在整理你的推薦職缺...</p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export default function JobsPage() {
+  return (
+    <Suspense fallback={<JobsPageFallback />}>
+      <JobsPageContent />
+    </Suspense>
   );
 }

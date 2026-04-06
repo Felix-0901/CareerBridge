@@ -1,9 +1,15 @@
 'use client';
 
-import { useState, useRef } from 'react';
+import { useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 import { Upload, FileText, Type, CheckCircle, Sparkles, ArrowRight, X } from 'lucide-react';
+import {
+  loadAnalysisSession,
+  mergeAnalysisSession,
+  saveAnalysisSession,
+  type AnalysisSession,
+} from '@/lib/analysis-session';
 import styles from './page.module.css';
 
 export default function UploadPage() {
@@ -13,6 +19,7 @@ export default function UploadPage() {
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
   const [mode, setMode] = useState<'upload' | 'manual'>('upload');
   const [analyzing, setAnalyzing] = useState(false);
+  const [existingSession] = useState<AnalysisSession | null>(() => loadAnalysisSession());
   const [manualData, setManualData] = useState({
     education: '',
     experience: '',
@@ -41,10 +48,17 @@ export default function UploadPage() {
   };
 
   const handleAnalyze = () => {
+    const nextSession = mergeAnalysisSession(existingSession, {
+      source: mode === 'upload' ? 'upload' : 'manual',
+      manualData,
+      uploadedFileName: uploadedFile?.name ?? null,
+    });
+
+    saveAnalysisSession(nextSession);
     setAnalyzing(true);
     setTimeout(() => {
-      router.push('/analysis');
-    }, 3000);
+      router.push(`/analysis?source=${mode === 'upload' ? 'upload' : 'manual'}`);
+    }, 1800);
   };
 
   const canAnalyze = mode === 'upload'
@@ -99,6 +113,17 @@ export default function UploadPage() {
             <h2>上傳履歷或輸入經歷</h2>
             <p>讓 AI 了解你目前的能力與背景，才能給出最精準的推薦</p>
           </div>
+
+          {existingSession?.source === 'explore' && (
+            <div className={styles.contextCard}>
+              <h3>已帶入你剛剛的探索結果</h3>
+              <p>
+                目前已記住 {existingSession.selectedInterests.slice(0, 2).join('、') || '你的興趣方向'}
+                {existingSession.jobGoal ? `，並以${existingSession.jobGoal === 'internship' ? '實習' : existingSession.jobGoal === 'parttime' ? '兼職' : '正職'}為主要目標` : ''}。
+                現在補上履歷或經歷後，分析會更完整。
+              </p>
+            </div>
+          )}
 
           {/* Mode Toggle */}
           <div className={styles.modeToggle}>

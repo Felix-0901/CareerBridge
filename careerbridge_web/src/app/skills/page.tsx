@@ -7,7 +7,7 @@ import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Cell
 } from 'recharts';
 import {
-  TrendingUp, AlertTriangle, CheckCircle, BookOpen, ArrowRight, Target
+  TrendingUp, AlertTriangle, BookOpen, ArrowRight, Target
 } from 'lucide-react';
 import { mockSkillGaps, mockRadarData } from '@/data/skills';
 import { getScoreColor } from '@/lib/utils';

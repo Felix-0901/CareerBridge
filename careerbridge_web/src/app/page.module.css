@@ -143,6 +143,13 @@
   background: var(--color-surface);
 }
 
+.statsNote {
+  margin-top: var(--space-md);
+  text-align: right;
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+}
+
 /* ===== Features ===== */
 .featureCard {
   text-align: center;

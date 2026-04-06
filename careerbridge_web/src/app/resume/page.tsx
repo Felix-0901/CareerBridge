@@ -3,8 +3,8 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import {
-  Edit3, Copy, CheckCircle, ArrowRight, FileText,
-  AlertTriangle, Sparkles, RotateCcw
+  Edit3, Copy, CheckCircle, FileText,
+  AlertTriangle, Sparkles
 } from 'lucide-react';
 import styles from './page.module.css';
 

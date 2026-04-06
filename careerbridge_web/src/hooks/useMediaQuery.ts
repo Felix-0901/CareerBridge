@@ -1,23 +1,21 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useSyncExternalStore } from 'react';
 
 export function useMediaQuery(query: string): boolean {
-  const [matches, setMatches] = useState(false);
+  return useSyncExternalStore(
+    (onStoreChange) => {
+      if (typeof window === 'undefined') return () => {};
 
-  useEffect(() => {
-    const media = window.matchMedia(query);
-    setMatches(media.matches);
+      const media = window.matchMedia(query);
+      const listener = () => onStoreChange();
 
-    const listener = (event: MediaQueryListEvent) => {
-      setMatches(event.matches);
-    };
-
-    media.addEventListener('change', listener);
-    return () => media.removeEventListener('change', listener);
-  }, [query]);
-
-  return matches;
+      media.addEventListener('change', listener);
+      return () => media.removeEventListener('change', listener);
+    },
+    () => (typeof window === 'undefined' ? false : window.matchMedia(query).matches),
+    () => false
+  );
 }
 
 export const breakpoints = {

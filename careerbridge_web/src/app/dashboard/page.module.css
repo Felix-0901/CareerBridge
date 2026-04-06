@@ -39,9 +39,10 @@
 
 .grid {
   display: grid;
-  grid-template-columns: 1fr 380px;
+  grid-template-columns: 1fr 360px;
   gap: var(--space-xl);
   align-items: start;
+  min-width: 0;
 }
 
 .kanbanWrap {

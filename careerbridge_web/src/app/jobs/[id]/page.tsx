@@ -1,6 +1,6 @@
 'use client';
 
-import { use } from 'react';
+import { use, useMemo, useState } from 'react';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
@@ -11,21 +11,37 @@ import {
 } from 'lucide-react';
 import { getJobById } from '@/data/jobs';
 import { getScoreColor, getScoreLabel } from '@/lib/utils';
+import { loadAnalysisSession, type AnalysisSession } from '@/lib/analysis-session';
+import { loadSavedJobs, saveSavedJobs, toggleSavedJob } from '@/lib/saved-jobs';
+import { personalizeJobs } from '@/lib/analysis-engine';
 import styles from './page.module.css';
 
 export default function JobDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
   const job = getJobById(id);
+  const [session] = useState<AnalysisSession | null>(() => loadAnalysisSession());
+  const [savedIds, setSavedIds] = useState<string[]>(() => loadSavedJobs());
 
+  const personalizedJob = useMemo(
+    () => (job ? personalizeJobs(session).find((item) => item.id === job.id) ?? null : null),
+    [job, session]
+  );
   if (!job) return notFound();
 
+  const displayScore = personalizedJob?.personalizedScore ?? job.matchScore ?? 0;
   const scoreDimensions = [
-    { label: '技能吻合度', score: job.skillMatch || 0, weight: '35%' },
-    { label: '經歷相關度', score: job.experienceMatch || 0, weight: '25%' },
-    { label: '興趣吻合度', score: job.interestMatch || 0, weight: '15%' },
-    { label: '條件可行性', score: job.feasibilityMatch || 0, weight: '15%' },
-    { label: '履歷完成度', score: job.resumeReadiness || 0, weight: '10%' },
+    { label: '技能吻合度', score: personalizedJob?.skillMatch || job.skillMatch || 0, weight: '35%' },
+    { label: '經歷相關度', score: personalizedJob?.experienceMatch || job.experienceMatch || 0, weight: '25%' },
+    { label: '興趣吻合度', score: personalizedJob?.interestMatch || job.interestMatch || 0, weight: '15%' },
+    { label: '條件可行性', score: personalizedJob?.feasibilityMatch || job.feasibilityMatch || 0, weight: '15%' },
+    { label: '履歷完成度', score: personalizedJob?.resumeReadiness || job.resumeReadiness || 0, weight: '10%' },
   ];
+
+  const handleToggleSave = () => {
+    const nextIds = toggleSavedJob(savedIds, job.id);
+    setSavedIds(nextIds);
+    saveSavedJobs(nextIds);
+  };
 
   return (
     <div className={styles.container}>
@@ -63,11 +79,14 @@ export default function JobDetailPage({ params }: { params: Promise<{ id: string
                 <span><DollarSign size={15} /> {job.salary}</span>
               </div>
               <div className={styles.titleActions}>
-                <button className="btn btn-primary">
-                  <ExternalLink size={16} /> 前往投遞
-                </button>
-                <button className="btn btn-secondary">
-                  <Bookmark size={16} /> 收藏
+                <Link
+                  href={job.isOfficialResource ? '/resources' : `/resume?job=${job.id}`}
+                  className="btn btn-primary"
+                >
+                  <ExternalLink size={16} /> {job.isOfficialResource ? '前往官方資源' : '先準備投遞'}
+                </Link>
+                <button className="btn btn-secondary" onClick={handleToggleSave}>
+                  <Bookmark size={16} /> {savedIds.includes(job.id) ? '已收藏' : '收藏'}
                 </button>
               </div>
             </motion.div>
@@ -171,18 +190,23 @@ export default function JobDetailPage({ params }: { params: Promise<{ id: string
                   <circle cx="60" cy="60" r="52" fill="none" stroke="var(--color-border-light)" strokeWidth="6" />
                   <circle
                     cx="60" cy="60" r="52" fill="none"
-                    stroke={getScoreColor(job.matchScore || 0)}
+                    stroke={getScoreColor(displayScore)}
                     strokeWidth="6"
-                    strokeDasharray={`${(job.matchScore || 0) * 3.267} 326.7`}
+                    strokeDasharray={`${displayScore * 3.267} 326.7`}
                     strokeLinecap="round"
                     transform="rotate(-90 60 60)"
                   />
                 </svg>
                 <div className={styles.mainScoreText}>
-                  <span className={styles.mainScoreValue}>{job.matchScore}</span>
-                  <span className={styles.mainScoreLabel}>{getScoreLabel(job.matchScore || 0)}</span>
+                  <span className={styles.mainScoreValue}>{displayScore}</span>
+                  <span className={styles.mainScoreLabel}>{getScoreLabel(displayScore)}</span>
                 </div>
               </div>
+              {session && (
+                <p style={{ fontSize: 'var(--text-xs)', color: 'var(--color-text-muted)', marginBottom: 'var(--space-md)' }}>
+                  這個匹配度已依你最近一次的探索或分析結果重新計算。
+                </p>
+              )}
               <div className={styles.dimensions}>
                 {scoreDimensions.map((d, i) => (
                   <div key={i} className={styles.dimension}>

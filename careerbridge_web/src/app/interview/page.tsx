@@ -2,7 +2,6 @@
 
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import Link from 'next/link';
 import {
   MessageSquare, Star, ChevronDown, ChevronUp,
   Lightbulb, Copy, CheckCircle, BookOpen, ExternalLink

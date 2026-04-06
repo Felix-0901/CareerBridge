@@ -9,6 +9,7 @@ import {
   Heart, Megaphone, Building2, Leaf
 } from 'lucide-react';
 import { skillCategories, interestAreas } from '@/data/skills';
+import { createEmptyAnalysisSession, saveAnalysisSession } from '@/lib/analysis-session';
 import styles from './page.module.css';
 
 const userTypes = [
@@ -65,7 +66,15 @@ export default function OnboardingPage() {
   };
 
   const handleFinish = () => {
-    router.push('/upload');
+    saveAnalysisSession(createEmptyAnalysisSession({
+      source: 'explore',
+      userType: userType as 'highschool' | 'college' | 'fresh',
+      selectedInterests,
+      selectedSkills,
+      jobGoal: jobGoal as 'internship' | 'parttime' | 'fulltime',
+      preferences,
+    }));
+    router.push('/analysis?source=explore');
   };
 
   return (
@@ -248,7 +257,7 @@ export default function OnboardingPage() {
               </button>
             ) : (
               <button className="btn btn-primary btn-lg" onClick={handleFinish}>
-                <Sparkles size={18} /> 完成，開始分析
+                <Sparkles size={18} /> 完成，直接開始分析
               </button>
             )}
           </div>

@@ -126,6 +126,7 @@ export const mockWeeklyTasks: WeeklyTask[] = [
 
 export interface ApplicationRecord {
   id: string;
+  jobId: string;
   jobTitle: string;
   company: string;
   status: 'saved' | 'applied' | 'interview' | 'offered' | 'rejected';
@@ -134,12 +135,12 @@ export interface ApplicationRecord {
 }
 
 export const mockApplications: ApplicationRecord[] = [
-  { id: 'a1', jobTitle: '社群行銷實習生', company: '創意數位科技', status: 'interview', appliedDate: '2026-04-01', matchScore: 88 },
-  { id: 'a2', jobTitle: '活動企劃助理', company: '台北市青年服務辦公室', status: 'applied', appliedDate: '2026-04-02', matchScore: 82 },
-  { id: 'a3', jobTitle: '內容企劃助理', company: '好學教育平台', status: 'saved', matchScore: 79 },
-  { id: 'a4', jobTitle: '社群小編', company: '青年創業社群', status: 'offered', appliedDate: '2026-03-28', matchScore: 85 },
-  { id: 'a5', jobTitle: '前端開發實習生', company: '雲端創新', status: 'rejected', appliedDate: '2026-03-25', matchScore: 72 },
-  { id: 'a6', jobTitle: '行政助理', company: '就業服務處', status: 'saved', matchScore: 90 },
-  { id: 'a7', jobTitle: '人力資源實習生', company: '新創人才科技', status: 'applied', appliedDate: '2026-04-04', matchScore: 77 },
-  { id: 'a8', jobTitle: '數據分析實習生', company: '未來金融科技', status: 'saved', matchScore: 65 },
+  { id: 'a1', jobId: 'job-1', jobTitle: '社群行銷實習生', company: '創意數位科技', status: 'interview', appliedDate: '2026-04-01', matchScore: 88 },
+  { id: 'a2', jobId: 'job-3', jobTitle: '活動企劃助理', company: '台北市青年服務辦公室', status: 'applied', appliedDate: '2026-04-02', matchScore: 82 },
+  { id: 'a3', jobId: 'job-6', jobTitle: '內容企劃助理', company: '好學教育平台', status: 'saved', matchScore: 79 },
+  { id: 'a4', jobId: 'job-9', jobTitle: '社群小編', company: '青年創業社群', status: 'offered', appliedDate: '2026-03-28', matchScore: 85 },
+  { id: 'a5', jobId: 'job-2', jobTitle: '前端開發實習生', company: '雲端創新', status: 'rejected', appliedDate: '2026-03-25', matchScore: 72 },
+  { id: 'a6', jobId: 'job-7', jobTitle: '行政助理', company: '就業服務處', status: 'saved', matchScore: 90 },
+  { id: 'a7', jobId: 'job-10', jobTitle: '人力資源實習生', company: '新創人才科技', status: 'applied', appliedDate: '2026-04-04', matchScore: 77 },
+  { id: 'a8', jobId: 'job-4', jobTitle: '數據分析實習生', company: '未來金融科技', status: 'saved', matchScore: 65 },
 ];

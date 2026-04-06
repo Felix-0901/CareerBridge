@@ -11,7 +11,6 @@ import {
   CheckCircle, Circle, Calendar, TrendingUp, ArrowRight, Sparkles
 } from 'lucide-react';
 import { mockDashboardStats, mockWeeklyTasks, mockApplications } from '@/data/user-profile';
-import { getStatusLabel, getStatusColor } from '@/lib/utils';
 import styles from './page.module.css';
 
 const statusConfig = [
@@ -95,7 +94,7 @@ export default function DashboardPage() {
                       <span className="kanban-count">{items.length}</span>
                     </div>
                     {items.map((app) => (
-                      <Link key={app.id} href={`/jobs/${app.id}`} className="kanban-card" style={{ textDecoration: 'none', color: 'inherit' }}>
+                      <Link key={app.id} href={`/jobs/${app.jobId}`} className="kanban-card" style={{ textDecoration: 'none', color: 'inherit' }}>
                         <div style={{ fontWeight: 600, fontSize: 'var(--text-sm)', marginBottom: '4px' }}>
                           {app.jobTitle}
                         </div>

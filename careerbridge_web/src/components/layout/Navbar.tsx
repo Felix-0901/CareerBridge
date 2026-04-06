@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Menu, X, BriefcaseBusiness } from 'lucide-react';
@@ -28,31 +28,43 @@ export default function Navbar() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  useEffect(() => {
-    setMobileOpen(false);
-  }, [pathname]);
-
   return (
     <nav className={`navbar ${scrolled ? 'navbar-scrolled' : ''}`} id="main-navbar">
-      <Link href="/" className="navbar-brand" aria-label="CareerBridge 首頁">
+      <Link
+        href="/"
+        className="navbar-brand"
+        aria-label="CareerBridge 首頁"
+        onClick={() => setMobileOpen(false)}
+      >
         <BriefcaseBusiness size={28} />
         <span>CareerBridge</span>
       </Link>
 
       <div className={`navbar-nav ${mobileOpen ? 'open' : ''}`}>
-        {navLinks.map((link) => (
-          <Link
-            key={link.href}
-            href={link.href}
-            className={`navbar-link ${pathname === link.href ? 'active' : ''}`}
-          >
-            {link.label}
-          </Link>
-        ))}
+        {navLinks.map((link) => {
+          const isActive = link.href === '/'
+            ? pathname === '/'
+            : pathname === link.href || pathname.startsWith(`${link.href}/`);
+
+          return (
+            <Link
+              key={link.href}
+              href={link.href}
+              className={`navbar-link ${isActive ? 'active' : ''}`}
+              onClick={() => setMobileOpen(false)}
+            >
+              {link.label}
+            </Link>
+          );
+        })}
       </div>
 
       <div className="navbar-actions">
-        <Link href="/upload" className={`btn btn-primary btn-sm ${styles.navCta}`}>
+        <Link
+          href="/upload"
+          className={`btn btn-primary btn-sm ${styles.navCta}`}
+          onClick={() => setMobileOpen(false)}
+        >
           開始分析
         </Link>
         <button

@@ -61,10 +61,10 @@ const steps = [
 
 export default function HomePage() {
   const [testIdx, setTestIdx] = useState(0);
-  const featRef = useAnimateOnScroll();
-  const howRef = useAnimateOnScroll();
-  const statsRef = useAnimateOnScroll();
-  const testRef = useAnimateOnScroll();
+  const { ref: featSectionRef, isVisible: featVisible } = useAnimateOnScroll();
+  const { ref: howSectionRef, isVisible: howVisible } = useAnimateOnScroll();
+  const { ref: statsSectionRef, isVisible: statsVisible } = useAnimateOnScroll();
+  const { ref: testSectionRef } = useAnimateOnScroll();
 
   const nextTest = () => setTestIdx((i) => (i + 1) % testimonials.length);
   const prevTest = () => setTestIdx((i) => (i - 1 + testimonials.length) % testimonials.length);
@@ -126,7 +126,7 @@ export default function HomePage() {
       </section>
 
       {/* === STATS === */}
-      <section className={`section ${styles.statsSection}`} ref={statsRef.ref}>
+      <section className={`section ${styles.statsSection}`} ref={statsSectionRef}>
         <div className="page-container">
           <div className={styles.statsGrid}>
             {[
@@ -139,7 +139,7 @@ export default function HomePage() {
                 key={i}
                 className={`card ${styles.statItem}`}
                 initial={{ opacity: 0, y: 20 }}
-                animate={statsRef.isVisible ? { opacity: 1, y: 0 } : {}}
+                animate={statsVisible ? { opacity: 1, y: 0 } : {}}
                 transition={{ delay: i * 0.1, duration: 0.5 }}
               >
                 <div className="stat-value">
@@ -149,11 +149,14 @@ export default function HomePage() {
               </motion.div>
             ))}
           </div>
+          <p className={styles.statsNote}>
+            以上數據為目前示範站使用的模擬資料，正式上線後會改接真實平台與分析結果。
+          </p>
         </div>
       </section>
 
       {/* === FEATURES === */}
-      <section className="section" ref={featRef.ref}>
+      <section className="section" ref={featSectionRef}>
         <div className="page-container">
           <div className="section-header">
             <span className="section-label">核心功能</span>
@@ -166,7 +169,7 @@ export default function HomePage() {
                 key={i}
                 className={`card card-hover ${styles.featureCard}`}
                 initial={{ opacity: 0, y: 20 }}
-                animate={featRef.isVisible ? { opacity: 1, y: 0 } : {}}
+                animate={featVisible ? { opacity: 1, y: 0 } : {}}
                 transition={{ delay: i * 0.08, duration: 0.5 }}
               >
                 <div className={styles.featureIcon}>
@@ -181,7 +184,7 @@ export default function HomePage() {
       </section>
 
       {/* === HOW IT WORKS === */}
-      <section className={`section ${styles.howSection}`} ref={howRef.ref}>
+      <section className={`section ${styles.howSection}`} ref={howSectionRef}>
         <div className="page-container">
           <div className="section-header">
             <span className="section-label">使用流程</span>
@@ -194,7 +197,7 @@ export default function HomePage() {
                 key={i}
                 className={styles.stepCard}
                 initial={{ opacity: 0, y: 20 }}
-                animate={howRef.isVisible ? { opacity: 1, y: 0 } : {}}
+                animate={howVisible ? { opacity: 1, y: 0 } : {}}
                 transition={{ delay: i * 0.15, duration: 0.5 }}
               >
                 <div className={styles.stepNum}>{s.num}</div>
@@ -210,7 +213,7 @@ export default function HomePage() {
       </section>
 
       {/* === TESTIMONIALS === */}
-      <section className="section" ref={testRef.ref}>
+      <section className="section" ref={testSectionRef}>
         <div className="page-container">
           <div className="section-header">
             <span className="section-label">使用者回饋</span>

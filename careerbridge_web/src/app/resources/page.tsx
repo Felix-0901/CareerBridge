@@ -3,7 +3,7 @@
 import { motion } from 'framer-motion';
 import {
   Compass, Briefcase, Award, Building2, MapPin, Wallet,
-  ExternalLink, ArrowRight, Users, Sparkles
+  ExternalLink, Users, Sparkles
 } from 'lucide-react';
 import { resources } from '@/data/resources';
 import styles from './page.module.css';
