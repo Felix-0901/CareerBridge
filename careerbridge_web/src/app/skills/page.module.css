@@ -1,0 +1,111 @@
+.container { padding: var(--space-xl) 0 var(--space-3xl); }
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-xl);
+  margin-bottom: var(--space-3xl);
+}
+
+.chartCard h3 {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  margin-bottom: var(--space-lg);
+  font-size: var(--text-xl);
+  color: var(--color-primary);
+}
+
+.sectionTitle {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  margin-bottom: var(--space-xl);
+}
+
+.gapList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.gapCard { padding: var(--space-xl); }
+
+.gapHeader {
+  display: flex;
+  align-items: center;
+  gap: var(--space-lg);
+  margin-bottom: var(--space-md);
+}
+
+.gapRank {
+  font-family: var(--font-heading);
+  font-weight: 800;
+  font-size: var(--text-2xl);
+  color: var(--color-border);
+  min-width: 40px;
+}
+
+.gapInfo {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.gapInfo h4 { margin: 0; }
+
+.gapScores {
+  display: flex;
+  gap: var(--space-lg);
+  font-size: var(--text-sm);
+}
+
+.gapCurrent { color: var(--color-secondary); font-weight: 600; }
+.gapRequired { color: var(--color-text-muted); }
+
+.gapBar {
+  position: relative;
+  margin-bottom: var(--space-md);
+}
+
+.gapTarget {
+  position: absolute;
+  top: -4px;
+  transform: translateX(-1px);
+}
+
+.gapTargetLine {
+  width: 2px;
+  height: 16px;
+  background: var(--color-text-muted);
+  border-radius: 1px;
+}
+
+.gapSuggestion {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-sm);
+  padding: var(--space-md);
+  background: var(--color-background-alt);
+  border-radius: var(--radius-md);
+}
+
+.gapSuggestion p {
+  font-size: var(--text-sm);
+  color: var(--color-text-light);
+  line-height: 1.6;
+}
+
+.ctaArea {
+  display: flex;
+  gap: var(--space-md);
+  justify-content: center;
+  margin-top: var(--space-3xl);
+}
+
+@media (max-width: 768px) {
+  .grid { grid-template-columns: 1fr; }
+  .gapHeader { flex-direction: column; align-items: flex-start; }
+  .ctaArea { flex-direction: column; align-items: center; }
+}

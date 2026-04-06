@@ -1,0 +1,10 @@
+.navCta {
+  /* ensure CTA stays visible on mobile */
+}
+
+@media (max-width: 768px) {
+  .navCta {
+    font-size: var(--text-xs);
+    padding: 6px 14px;
+  }
+}

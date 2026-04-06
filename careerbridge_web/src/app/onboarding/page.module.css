@@ -1,0 +1,147 @@
+.container {
+  min-height: 80vh;
+  padding: var(--space-xl) 0 var(--space-3xl);
+}
+
+.wrapper {
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.stepContent {
+  min-height: 400px;
+}
+
+.stepTitle {
+  text-align: center;
+  margin-bottom: var(--space-sm);
+  font-size: var(--text-3xl);
+}
+
+.stepDesc {
+  text-align: center;
+  color: var(--color-text-light);
+  margin-bottom: var(--space-2xl);
+}
+
+.typeGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-lg);
+}
+
+.typeCard {
+  text-align: center;
+  padding: var(--space-xl);
+  position: relative;
+  border: 2px solid transparent;
+  transition: all var(--transition-base);
+}
+
+.typeCard p {
+  font-size: var(--text-sm);
+  color: var(--color-text-light);
+  margin-top: var(--space-xs);
+}
+
+.typeCard h4 {
+  margin-top: var(--space-md);
+}
+
+.selected {
+  border-color: var(--color-primary) !important;
+  background: var(--color-background-alt);
+}
+
+.checkBadge {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--color-cta);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.tagsWrap {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-sm);
+  margin-bottom: var(--space-md);
+}
+
+.tagBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  border-radius: var(--radius-full);
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  color: var(--color-text-light);
+  font-size: var(--text-sm);
+  font-weight: 500;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.tagBtn:hover {
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+}
+
+.tagActive {
+  background: var(--color-primary);
+  color: white;
+  border-color: var(--color-primary);
+}
+
+.tagActive:hover {
+  background: var(--color-primary-dark);
+  color: white;
+}
+
+.count {
+  text-align: center;
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+  margin-top: var(--space-sm);
+}
+
+.skillGroup {
+  margin-bottom: var(--space-xl);
+}
+
+.skillGroupTitle {
+  margin-bottom: var(--space-sm);
+  color: var(--color-primary);
+  font-size: var(--text-sm);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.formGroup {
+  margin-bottom: var(--space-lg);
+}
+
+.navActions {
+  display: flex;
+  align-items: center;
+  margin-top: var(--space-2xl);
+  padding-top: var(--space-xl);
+  border-top: 1px solid var(--color-border);
+}
+
+@media (max-width: 768px) {
+  .typeGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .stepTitle {
+    font-size: var(--text-2xl);
+  }
+}

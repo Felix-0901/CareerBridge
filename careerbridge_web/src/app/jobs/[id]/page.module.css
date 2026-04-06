@@ -1,0 +1,270 @@
+.container {
+  padding: var(--space-xl) 0 var(--space-3xl);
+}
+
+.backLink {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-sm);
+  font-size: var(--text-sm);
+  color: var(--color-text-light);
+  margin-bottom: var(--space-xl);
+  transition: color var(--transition-fast);
+}
+
+.backLink:hover {
+  color: var(--color-primary);
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: 1fr 340px;
+  gap: var(--space-xl);
+  align-items: start;
+}
+
+.mainCol {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xl);
+}
+
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xl);
+  position: sticky;
+  top: calc(var(--navbar-height) + 48px);
+}
+
+/* Title Card */
+.titleCard {
+  padding: var(--space-2xl);
+}
+
+.titleMeta {
+  display: flex;
+  gap: var(--space-sm);
+  flex-wrap: wrap;
+  margin-bottom: var(--space-md);
+}
+
+.jobTitle {
+  font-size: var(--text-3xl);
+  margin-bottom: var(--space-xs);
+}
+
+.company {
+  font-size: var(--text-lg);
+  color: var(--color-text-light);
+  font-weight: 500;
+  margin-bottom: var(--space-lg);
+}
+
+.details {
+  display: flex;
+  gap: var(--space-lg);
+  flex-wrap: wrap;
+  font-size: var(--text-sm);
+  color: var(--color-text-light);
+  margin-bottom: var(--space-xl);
+}
+
+.details span {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.titleActions {
+  display: flex;
+  gap: var(--space-md);
+}
+
+/* Description */
+.descCard h3 {
+  margin-bottom: var(--space-md);
+  font-size: var(--text-xl);
+}
+
+.plainDesc {
+  line-height: 1.8;
+  color: var(--color-text-light);
+  font-size: var(--text-base);
+}
+
+.growthNote {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  margin-top: var(--space-lg);
+  padding: var(--space-md);
+  background: var(--color-cta-light);
+  border-radius: var(--radius-md);
+  font-size: var(--text-sm);
+  color: var(--color-text);
+}
+
+/* Skill Card */
+.skillCard h3 {
+  margin-bottom: var(--space-xl);
+  font-size: var(--text-xl);
+}
+
+.skillGroups {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xl);
+}
+
+.skillGroup {
+}
+
+.skillGroupTitle {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  margin-bottom: var(--space-sm);
+  font-size: var(--text-sm);
+  color: var(--color-text);
+}
+
+.skillTags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-sm);
+}
+
+/* Action Cards */
+.actionCards {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.actionCard {
+  display: flex;
+  align-items: center;
+  gap: var(--space-lg);
+  text-decoration: none;
+  color: inherit;
+}
+
+.actionCard h4 {
+  margin-bottom: 2px;
+}
+
+.actionCard p {
+  font-size: var(--text-sm);
+  color: var(--color-text-light);
+}
+
+.actionCard div:nth-child(2) {
+  flex: 1;
+}
+
+/* Score Card */
+.scoreCard {
+  text-align: center;
+}
+
+.scoreCard h3 {
+  margin-bottom: var(--space-lg);
+  font-size: var(--text-xl);
+}
+
+.mainScore {
+  position: relative;
+  width: 120px;
+  height: 120px;
+  margin: 0 auto var(--space-xl);
+}
+
+.mainScore svg {
+  transform: rotate(0deg);
+}
+
+.mainScoreText {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.mainScoreValue {
+  font-family: var(--font-heading);
+  font-weight: 800;
+  font-size: var(--text-3xl);
+  color: var(--color-text);
+  line-height: 1;
+}
+
+.mainScoreLabel {
+  font-size: var(--text-xs);
+  color: var(--color-text-light);
+  margin-top: 4px;
+}
+
+.dimensions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+  text-align: left;
+}
+
+.dimension {
+}
+
+.dimHeader {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 4px;
+}
+
+.dimLabel {
+  font-size: var(--text-xs);
+  color: var(--color-text-light);
+}
+
+.dimScore {
+  font-size: var(--text-xs);
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+/* Resource Card */
+.resourceCard {
+  text-align: center;
+}
+
+.resourceCard h4 {
+  margin-top: var(--space-sm);
+  margin-bottom: var(--space-xs);
+}
+
+.resourceCard p {
+  font-size: var(--text-sm);
+  color: var(--color-text-light);
+}
+
+@media (max-width: 1024px) {
+  .layout {
+    grid-template-columns: 1fr;
+  }
+
+  .sidebar {
+    position: static;
+  }
+}
+
+@media (max-width: 768px) {
+  .jobTitle {
+    font-size: var(--text-2xl);
+  }
+
+  .titleActions {
+    flex-direction: column;
+  }
+}

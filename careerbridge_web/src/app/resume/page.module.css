@@ -1,0 +1,106 @@
+.container { padding: var(--space-xl) 0 var(--space-3xl); }
+
+.wrapper { max-width: 900px; margin: 0 auto; }
+
+.sectionCard {
+  margin-bottom: var(--space-xl);
+  padding: var(--space-xl);
+}
+
+.sectionTitle {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  margin-bottom: var(--space-lg);
+  font-size: var(--text-lg);
+  color: var(--color-primary);
+}
+
+.label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-size: var(--text-sm);
+  margin-bottom: var(--space-md);
+  color: var(--color-text);
+}
+
+.content {
+  font-size: var(--text-sm);
+  line-height: 1.8;
+  color: var(--color-text);
+}
+
+.copyBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: var(--space-md);
+  padding: 6px 14px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-cta);
+  background: transparent;
+  color: var(--color-cta);
+  font-size: var(--text-xs);
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.copyBtn:hover {
+  background: var(--color-cta-light);
+}
+
+.reason {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  margin-top: var(--space-md);
+  padding: var(--space-md);
+  background: var(--color-background-alt);
+  border-radius: var(--radius-md);
+  font-size: var(--text-sm);
+  color: var(--color-text-light);
+}
+
+.tips {
+  background: var(--color-surface);
+  border-radius: var(--radius-lg);
+  padding: var(--space-xl);
+  border: 1px solid var(--color-border);
+  margin-top: var(--space-xl);
+}
+
+.tips h3 {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  margin-bottom: var(--space-lg);
+  font-size: var(--text-xl);
+}
+
+.tips ul {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+  list-style: none;
+  padding: 0;
+}
+
+.tips li {
+  padding-left: 20px;
+  position: relative;
+  font-size: var(--text-sm);
+  color: var(--color-text-light);
+  line-height: 1.6;
+}
+
+.tips li::before {
+  content: '✓';
+  position: absolute;
+  left: 0;
+  color: var(--color-cta);
+  font-weight: bold;
+}

@@ -1,0 +1,186 @@
+.container {
+  padding: var(--space-xl) 0 var(--space-3xl);
+}
+
+.header {
+  text-align: center;
+  margin-bottom: var(--space-2xl);
+}
+
+.headerDesc {
+  color: var(--color-text-light);
+  font-size: var(--text-lg);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-xl);
+  align-items: start;
+}
+
+.leftCol, .rightCol {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xl);
+}
+
+.radarCard h3, .skillsCard h3, .completeCard h3,
+.strengthCard h3, .rolesCard h3, .highlightCard h3,
+.nextStepsCard h3 {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  margin-bottom: var(--space-lg);
+  font-size: var(--text-xl);
+  color: var(--color-primary);
+}
+
+.chartWrap {
+  margin: 0 -16px;
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-sm);
+}
+
+.completeHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.completePercent {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: var(--text-2xl);
+  color: var(--color-primary);
+}
+
+.gapList {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.gapList li {
+  padding-left: 16px;
+  position: relative;
+  font-size: var(--text-sm);
+  color: var(--color-text-light);
+}
+
+.gapList li::before {
+  content: '•';
+  position: absolute;
+  left: 0;
+  color: var(--color-warning);
+  font-weight: bold;
+}
+
+.strengthList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.strengthItem {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  font-size: var(--text-sm);
+}
+
+.rolesList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.roleItem {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  padding: var(--space-sm) var(--space-md);
+  background: var(--color-background);
+  border-radius: var(--radius-md);
+  font-weight: 500;
+}
+
+.roleRank {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  color: var(--color-primary);
+  font-size: var(--text-lg);
+}
+
+.highlightList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.highlightItem {
+  display: flex;
+  gap: var(--space-md);
+}
+
+.highlightDot {
+  width: 8px;
+  height: 8px;
+  min-width: 8px;
+  border-radius: 50%;
+  background: var(--color-secondary);
+  margin-top: 7px;
+}
+
+.highlightItem p {
+  font-size: var(--text-sm);
+  color: var(--color-text-light);
+  line-height: 1.6;
+}
+
+.stepsList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.nextStepItem {
+  display: flex;
+  gap: var(--space-md);
+  padding: var(--space-md);
+  background: var(--color-background);
+  border-radius: var(--radius-md);
+}
+
+.nextStepInfo {
+  flex: 1;
+}
+
+.nextStepAction {
+  font-weight: 500;
+  font-size: var(--text-sm);
+  margin-bottom: 4px;
+}
+
+.nextStepTime {
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+  margin-right: var(--space-sm);
+}
+
+.nextStepResource {
+  font-size: var(--text-xs);
+  color: var(--color-primary);
+  font-weight: 500;
+}
+
+@media (max-width: 768px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}
