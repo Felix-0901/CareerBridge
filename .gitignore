@@ -35,3 +35,6 @@ next-env.d.ts
 
 # Design System (generated)
 design-system/
+
+# Trae / Agent workspace
+.agent/
