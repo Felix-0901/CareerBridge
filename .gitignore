@@ -38,3 +38,4 @@ design-system/
 
 # Trae / Agent workspace
 .agent/
+.claude/
